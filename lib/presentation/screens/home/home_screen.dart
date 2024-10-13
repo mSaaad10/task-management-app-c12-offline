@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app_c12_offline/presentation/screens/tabs/settings_tab/Settings_tab.dart';
-import 'package:todo_app_c12_offline/presentation/screens/tabs/tasks_tab/tasks_tab.dart';
+
+import 'tabs/settings_tab/Settings_tab.dart';
+import 'tabs/tasks_tab/tasks_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -24,20 +25,25 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('ToDo List'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: buildFab(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: buildBottomNavBar(),
+
+      body: tabs[selectedIndex], // 1
+    );
+  }
+
+  Widget buildFab() => FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      );
+
+  Widget buildBottomNavBar() => BottomAppBar(
         notchMargin: 8,
         child: BottomNavigationBar(
             currentIndex: selectedIndex,
-            onTap: (index) {
-              selectedIndex = index; // 1
-              setState(() {});
-            },
+            onTap: onBottomNavBarTabClicked,
             items: const [
               BottomNavigationBarItem(
                   icon: Icon(
@@ -47,9 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.settings), label: 'Settings'),
             ]),
-      ),
+      );
 
-      body: tabs[selectedIndex], // 1
-    );
+  void onBottomNavBarTabClicked(int index) {
+    selectedIndex = index;
+    setState(() {});
   }
 }
